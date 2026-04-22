@@ -15,7 +15,7 @@ They are as follows:
 The web application was deployed on Google Cloud by building a docker image and docker container for all the 3 microservices and added to a kubernetes cluster. The ip address to the web application is provided below.
 
 Link to the Web application:
-35.186.220.230.nip.io/home
+[Click me](http://35.186.220.230.nip.io/home)
 
 
 Home page:
