@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fe-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fe
+  template:
+    metadata:
+      labels:
+        app: fe
+    spec:
+      containers:
+        - name: fe
+          image: northamerica-northeast2-docker.pkg.dev/centered-motif-492523-u3/lab5-repo/fe:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: fe-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fe-service
+  annotations:
+    cloud.google.com/backend-config: '{"ports": {"8080": "fe-backendconfig"}}'
+spec:
+  selector:
+    app: fe
+  ports:
+    - port: 8080
+      targetPort: 8080
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: fe-backendconfig
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 8080
+    type: HTTP
+    requestPath: /actuator/health
